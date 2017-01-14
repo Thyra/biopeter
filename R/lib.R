@@ -16,7 +16,7 @@ xyn_patterns_to_regex <- function(P) {
   as.vector(
     vapply(P, function(a) {
       paste(substr(a, 1, 1),
-            "\\.{",
+            ".{",
             substr(a, 3, nchar(a)),
             "}",
             substr(a, 2, 2),
@@ -45,4 +45,13 @@ parse_multifasta_file <- function(filepath) {
   # Final sequence also has to be appended
   sequences = append(sequences, current_sequence)
   return(sequences)
+}
+
+# Expects a character vector of sequences and one character vector of regex patterns
+# Returns transactions: sequences are datasets, patterns are items
+create_transactions <- function(sequences, patterns) {
+  return(
+    as(sapply(patterns, grepl, sequences, ignore.case=T),
+      "transactions")
+  )
 }
