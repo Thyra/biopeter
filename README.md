@@ -1,12 +1,30 @@
 # biopeter
 **Association Rules for regex patterns in amino acid sequences**
 
-***NOTICE: WORK IN PROGRESS, NOTHING WORKS YET***
-
 Biopeter is a utility intended to find [association rules](https://en.wikipedia.org/wiki/Association_rule_learning) for patterns in amino acid sequences.
 
-## DEV: Plan
-![Scheme](scheme.svg?raw=true "Scheme")
+## Usage
+```
+Rscript biopeter.R <file>
+```
+`<file>` should be a multifasta file containing amino acid sequences. Here is an example:
+```
+>random sequence 1 consisting of 20 residues.
+MIKLIEGKWPHGYNHECDEH
+
+>random sequence 2 consisting of 20 residues.
+GKRQEYVCEEEMFVAPCTPS
+
+>random sequence 3 consisting of 20 residues.
+QKNKLEWRRAKMTTIFVSDL
+
+>random sequence 4 consisting of 20 residues.
+DNPLSPDEMSHEGIHPWFSK
+
+>random sequence 5 consisting of 20 residues.
+YIDDTKRNRSDMLGEDVHTQ
+```
+biopeter will then print out the association rules it has found between combinations of two amino acids each and a distance between them (obviously that makes more sense when the sequences are not random ;-)).
 
 <!---
 ## Abusing biopeter
