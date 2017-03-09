@@ -20,6 +20,7 @@
 #
 #  --config-file : If this file exists, the options of it are read out. Any option given here manually overwrites what is in the file.
 
+library("optparse")
 option_list <- list(
   make_option("--aa", default="GPAVLIMCFYWHKRQNEDST",
               help="By default, %prog creates associations between patterns of the form XYn,
@@ -60,4 +61,7 @@ option_list <- list(
               instead of XYn patterns.")
 )
 
-options <- parse_args(OptionParser(option_list=option_list))
+arguments <- parse_args(OptionParser(option_list=option_list), positional_arguments = 1)
+options <- arguments$options
+file <- arguments$args[1]
+rm(arguments)

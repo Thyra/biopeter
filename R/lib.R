@@ -42,8 +42,11 @@ parse_multifasta_file <- function(filepath) {
       current_sequence = paste(current_sequence, line, sep="")
     }
   }
+  close(file)
   # Final sequence also has to be appended
-  sequences = append(sequences, current_sequence)
+  if(nchar(current_sequence) > 0) {
+    sequences = append(sequences, current_sequence)
+  }
   return(sequences)
 }
 
