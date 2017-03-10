@@ -1,0 +1,12 @@
+Package: biopeter
+Version: 0.1
+Date: 2017-xx-xx
+Title: Association Rules for regex patterns in amino acid sequences
+Authors@R: c(person("Thyra", "Developer", role = c("aut", "cre"), email = "Thyra@users.noreply.github.com"))
+Author: Thyra [aut, cre]
+Maintainer: Thyra <Thyra@users.noreply.github.com>
+Depends: R (>= 3.3.3)
+Description: @TODO Description
+License: MIT
+URL: https://github.com/Thyra/biopeter
+BugReports: https://github.com/Thyra/biopeter/issues
