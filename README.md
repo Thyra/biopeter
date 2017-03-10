@@ -1,4 +1,6 @@
 # biopeter
+[![Build Status](https://travis-ci.org/Thyra/biopeter.svg?branch=master)](https://travis-ci.org/Thyra/biopeter)
+
 **Association Rules for regex patterns in amino acid sequences**
 
 Biopeter is a utility intended to find [association rules](https://en.wikipedia.org/wiki/Association_rule_learning) for patterns in amino acid sequences.
