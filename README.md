@@ -3,7 +3,26 @@
 
 **Association Rules for regex patterns in amino acid sequences**
 
+## Purpose
 Biopeter is a utility intended to find [association rules](https://en.wikipedia.org/wiki/Association_rule_learning) for patterns in amino acid sequences.
+It takes a collection of amino acid sequences in [fasta format](https://en.wikipedia.org/wiki/FASTA_format)\* and deduces rules like *if the pattern X is present in the sequence, the pattern Y is also contained with a probability of p percent*.
+This can help biologists and bioinformaticians to discover functional relationships between different amino acid patterns in a set of related sequences.
+
+By default, biopeter works with patterns in the *XYn* form. *X* and *Y* are two amino acids and *n* denotes a distance between them. For example, *MK2* would mean a pattern where the amino acid Methionine (M) appears in the sequence, then there are 2 arbitrary amino acids, and then Lysine (K) follows. *LE1* means Leucin (L), one arbitrary amino acid, and then Glutamic acid. The following examplary sequence contains both these patterns: `MIPKLIEGKWPHGYNHECDE`
+
+If the *XYn* form does not fulfill your needs, it is also possible to work with custom regular expressions for patterns. This way you can create more complex patterns like `[MK][CTP]{2,5}[DL]`.
+
+\* In contrast to the standard format, biopeter will treat empty lines as the beginning of a new sequence. So the following file would contain three, not two sequences:
+
+```
+>random sequence 1 consisting of 20 residues.
+MIPKLIEGKWPHGYNHECDE
+
+>random sequence 2 consisting of 20 residues.
+GKRQEYVCEEEMFVAPCTPS
+
+QKNKLEWRRAKMTTIFVSDL
+```
 
 ## Usage
 ```
@@ -12,7 +31,7 @@ Rscript biopeter.R <file>
 `<file>` should be a multifasta file containing amino acid sequences. Here is an example:
 ```
 >random sequence 1 consisting of 20 residues.
-MIKLIEGKWPHGYNHECDEH
+MIPKLIEGKWPHGYNHECDE
 
 >random sequence 2 consisting of 20 residues.
 GKRQEYVCEEEMFVAPCTPS
@@ -26,7 +45,7 @@ DNPLSPDEMSHEGIHPWFSK
 >random sequence 5 consisting of 20 residues.
 YIDDTKRNRSDMLGEDVHTQ
 ```
-biopeter will then print out the association rules it has found between combinations of two amino acids each and a distance between them (obviously that makes more sense when the sequences are not random ;-)).
+Biopeter will then print out the association rules it has found between combinations of two amino acids each and a distance between them (obviously that makes more sense when the sequences are not random ;-)).
 
 <!---
 ## Abusing biopeter
