@@ -10,10 +10,21 @@ source("R/lib.R")
 library("arules")
 library("methods")
 
-aa <- strsplit(options$aa, "")[[1]]
+# Select amino acids
+## Set left and right to options$aa
+aa_left  <- strsplit(options$aa, "")[[1]]
+aa_right <- strsplit(options$aa, "")[[1]]
+
+## If specific right or left aas are given, overwrite
+if(nchar(options$`aa-left`) > 0) {
+  aa_left  <- strsplit(options$`aa-left`, "")[[1]]
+}
+if(nchar(options$`aa-right`) > 0) {
+  aa_right  <- strsplit(options$`aa-right`, "")[[1]]
+}
 
 # Generate patterns and read sequences
-patterns <- xyn_patterns_to_regex(generate_xyn_patterns(aa, aa, options$`n-min`:options$`n-max`))
+patterns <- xyn_patterns_to_regex(generate_xyn_patterns(aa_left, aa_right, options$`n-min`:options$`n-max`))
 sequences <- parse_multifasta_file(file)
 
 # Generate transactions from them
