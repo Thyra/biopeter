@@ -10,21 +10,31 @@ source("R/lib.R")
 library("arules")
 library("methods")
 
-# Select amino acids
-## Set left and right to options$aa
-aa_left  <- strsplit(options$aa, "")[[1]]
-aa_right <- strsplit(options$aa, "")[[1]]
+# If patterns are specified manually via file
+if(!is.null(options$`patterns-file`)) {
+  # If the file already contains regexp patterns
+  if(options$`regex-patterns`)
+    patterns <- readLines(file(options$`patterns-file`, "r"))
+  else
+    patterns <- xyn_patterns_to_regex(readLines(file(options$`patterns-file`, "r")))
+} else {
+  # XYn patterns should be generated.
+  # Select amino acids
+  ## Set left and right to options$aa
+  aa_left  <- strsplit(options$aa, "")[[1]]
+  aa_right <- strsplit(options$aa, "")[[1]]
 
-## If specific right or left aas are given, overwrite
-if(nchar(options$`aa-left`) > 0) {
-  aa_left  <- strsplit(options$`aa-left`, "")[[1]]
-}
-if(nchar(options$`aa-right`) > 0) {
-  aa_right  <- strsplit(options$`aa-right`, "")[[1]]
-}
+  ## If specific right or left aas are given, overwrite
+  if(!is.null(options$`aa-left`)) {
+    aa_left  <- strsplit(options$`aa-left`, "")[[1]]
+  }
+  if(!is.null(options$`aa-right`)) {
+    aa_right  <- strsplit(options$`aa-right`, "")[[1]]
+  }
 
-# Generate patterns and read sequences
-patterns <- xyn_patterns_to_regex(generate_xyn_patterns(aa_left, aa_right, options$`n-min`:options$`n-max`))
+  # Generate patterns and read sequences
+  patterns <- xyn_patterns_to_regex(generate_xyn_patterns(aa_left, aa_right, options$`n-min`:options$`n-max`))
+}
 sequences <- parse_multifasta_file(file)
 
 # Generate transactions from them

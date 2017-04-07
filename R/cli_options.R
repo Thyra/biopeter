@@ -28,10 +28,10 @@ option_list <- list(
               option the amino acids used to create these patterns can be limited to the ones
               supplied. Example: %prog --aa=\"AVCT\" . If not otherwise specified, the following
               amino acids are used to create the patterns: \"%default\""),
-  make_option("--aa-left", default="",
+  make_option("--aa-left",
               help="Similar to the --aa option, but only limits the amino acids on the left of
               the pattern – the X of XYn. Ignored if empty. [default: %default]"),
-  make_option("--aa-right", default="",
+  make_option("--aa-right",
               help="Similar to the --aa option, but only limits the amino acids on the right of
               the pattern – the Y of XYn. Ignored if empty. [default: %default]"),
 #  make_option("--exclude-aa", default="",
@@ -50,11 +50,11 @@ option_list <- list(
               help="Patterns are generated for a range of n values. This is the maximum value.
               [default: %default]"),
 
-  make_option("--patterns-file",
+  make_option("--patterns-file", type="character",
               help="Instead of letting the patterns be generated automatically, you can also
               provide them yourself, if you are interested in only a select list of patterns.
               For that provide a file here that contains the patterns in XYn form, one per line."),
-  make_option("--regex-patterns",
+  make_option("--regex-patterns", action="store_true", default=F,
               help="Instead of using only XYn patterns you can also provide any kind of other pattern
               in regex form, eg. [AV]{2,3}.{1,3}G
               Use this flag if the lines in your pattern-file should be treated as regular expressions
