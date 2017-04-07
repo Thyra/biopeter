@@ -47,8 +47,67 @@ YIDDTKRNRSDMLGEDVHTQ
 ```
 Biopeter will then print out the association rules it has found between combinations of two amino acids each and a distance between them (obviously that makes more sense when the sequences are not random ;-)).
 
-<!---
-## Abusing biopeter
+## Specifying Patterns
+### Generate Patterns
+You can specify the amino acids to examine in the XYn patterns with the following three options:
+```
+	--aa=AA
+		By default, biopeter creates associations between patterns of the form XYn,
+              where X and Y are two amino acids and n is the distance between them. With this
+              option the amino acids used to create these patterns can be limited to the ones
+              supplied. Example: %prog --aa="AVCT" . If not otherwise specified, the following
+              amino acids are used to create the patterns: "GPAVLIMCFYWHKRQNEDST"
+
+	--aa-left=AA-LEFT
+		Similar to the --aa option, but only limits the amino acids on the left of
+              the pattern – the X of XYn. [default: NULL]
+
+	--aa-right=AA-RIGHT
+		Similar to the --aa option, but only limits the amino acids on the right of
+              the pattern – the Y of XYn. [default: NULL]
+```
+The range of n can also be specified:
+```
+	--n-min=N-MIN
+		Patterns are generated for a range of n values. This is the minimum value.
+              [default: 3]
+
+	--n-max=N-MAX
+		Patterns are generated for a range of n values. This is the maximum value.
+              [default: 9]
+``` 
+Here are some examples:
+``` 
+Rscript biopeter.R --aa="ABC" --n-min=1 --n-max=3 <file>
+
+ [1] "AA1" "AA2" "AA3" "AB1" "AB2" "AB3" "AC1" "AC2" "AC3" "BA1" "BA2" "BA3"
+[13] "BB1" "BB2" "BB3" "BC1" "BC2" "BC3" "CA1" "CA2" "CA3" "CB1" "CB2" "CB3"
+[25] "CC1" "CC2" "CC3"
+``` 
+``` 
+Rscript biopeter.R --aa-left="AB" --aa-right="DE" --n-max=4 <file>
+
+[1] "AD3" "AD4" "AE3" "AE4" "BD3" "BD4" "BE3" "BE4"
+``` 
+### Provide Patterns Manually
+If you are only interested in a select set of patterns you can also provide them manually in a file, one per line
+``` 
+AD2
+BP1
+VQ4
+``` 
+and pass the file via the `--patterns-file` option.
+
+### Going beyond XYn Patterns
+If you have more complicated patterns you want to examine or the XYn scheme simply doesn't fit your needs, you can provide your patterns in complete regex syntax in a text file, again, one per line:
+``` 
+[MQ]+.{3,5}$
+D{2,4}A
+^KLE+
+``` 
+Additionally to the `patterns-file` option you then have to pass the `--regex-patterns` flag: `Rscript biopeter.R --patterns-file="mypatterns.txt" --regex-patterns <sequenceFile>`
+
+#### Abusing biopeter
 Even though biopeter is intended to be used on protein sequences, you can create association rules on all kinds of text patterns.
 Say, you want to find out how the words `man`, `brilliance`, `bucket`, and `overconfident` correlate in a book.
 Then you could create a `--pattern-file` like this
@@ -74,5 +133,4 @@ On mechanical slavery, on the slavery of the machine, the future of the world de
 ```
 Then you may, for example, find out, that in the given text whenever the words `man` and `brilliance` appear in a sentence, most probably
 the word `overconfident` also appears which may tell you something about the author's opinion on that matter.
-Not with this text, though, Oscar Wilde didn't use these words...
--->
+Not with this text, though, Oscar Wilde didn't use these words…
