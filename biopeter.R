@@ -41,8 +41,15 @@ sequences <- parse_multifasta_file(file)
 transactions <- create_transactions(sequences, patterns)
 rm(patterns, sequences)
 
+
+
+
 # Apply apriori algorithm and show results
-rules <- apriori(transactions)
+rules <- apriori(transactions,
+                 parameter = list(supp = options$support,
+                                  conf = options$confidence,
+                                  maxlen = options$maxlen))
+rm(transactions)
 print(inspect(rules))
 
 ### NOTES/UNFINISHED/BLABLABLA ###

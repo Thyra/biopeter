@@ -134,3 +134,17 @@ On mechanical slavery, on the slavery of the machine, the future of the world de
 Then you may, for example, find out, that in the given text whenever the words `man` and `brilliance` appear in a sentence, most probably
 the word `overconfident` also appears which may tell you something about the author's opinion on that matter.
 Not with this text, though, Oscar Wilde didn't use these words…
+
+## Tuning the Algorithm
+A very important part in mining association rules is to select only those that fit certain critera (i.e. namely a certain [support](https://en.wikipedia.org/wiki/Association_rule_learning#Support) and [confidence](https://en.wikipedia.org/wiki/Association_rule_learning#Confidence)). You can specify these criteria via the following options: 
+```
+	--support=SUPPORT
+		Minimal support for the mined rules/itemsets. [default: 0.9]
+
+	--confidence=CONFIDENCE
+		Minimal confidence for the mined rules. [default: 0.9]
+
+	--maxlen=MAXLEN
+		Maximal number of items to be considered in one rule. [default: 10]
+```
+As you can see the default values are very restrictive. The reason is the sheer amount of generated patterns and possible combinations thereof (2800 patterns -> 2^2800 combinations with default settings). So be careful when loosening the restrictions or your machine might run out of memory and freeze (happened to me many times while testing…)

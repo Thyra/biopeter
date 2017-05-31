@@ -1,18 +1,8 @@
-# These options will be implemented:
-#  --aa = Only use these AAs
-#  --aa-left = Only use these AAs for left
-#  --aa-right = Only use these AAs for right
-##  --exclude-aa = Remove these AAs from both left and right
-##  --exclude-aa-left = Remove only from left
-##  --exclude-aa-right = Remove onyl from right
-#  --n-min = Min for XYn n
-#  --n-max = Max for n...
+# Still to implement (maybe)
+#  --exclude-aa = Remove these AAs from both left and right
+#  --exclude-aa-left = Remove only from left
+#  --exclude-aa-right = Remove onyl from right
 #
-#  --patterns-file = Supply patterns manually
-#  --regex-patterns = FLAG: Instead of XYn patterns treat the supplied patterns as regular expressions
-#
-#  --min-support = min support for association rules
-#  --min-confidence = min confidence for association rules
 #  --algorithm = algorithm used: eclat (default) or apriori
 #
 #  --explore = FLAG: creates visualizations and launches interactive data sheets to explore the crated rules
@@ -58,7 +48,14 @@ option_list <- list(
               help="Instead of using only XYn patterns you can also provide any kind of other pattern
               in regex form, eg. [AV]{2,3}.{1,3}G
               Use this flag if the lines in your pattern-file should be treated as regular expressions
-              instead of XYn patterns.")
+              instead of XYn patterns."),
+
+  make_option("--support", type="double",
+              help="Minimal support for the mined rules/itemsets. [default: %default]", default=0.9),
+  make_option("--confidence", type="double",
+              help="Minimal confidence for the mined rules. [default: %default]", default=0.9),
+  make_option("--maxlen", type="integer",
+              help="Maximal number of items to be considered in one rule. [default: %default]", default=10)
 )
 
 arguments <- parse_args(OptionParser(option_list=option_list), positional_arguments = 1)
