@@ -30,10 +30,10 @@ option_list <- list(
               amino acids are used to create the patterns: \"%default\""),
   make_option("--aa-left",
               help="Similar to the --aa option, but only limits the amino acids on the left of
-              the pattern – the X of XYn. Ignored if empty. [default: %default]"),
+              the pattern – the X of XYn. [default: %default]"),
   make_option("--aa-right",
               help="Similar to the --aa option, but only limits the amino acids on the right of
-              the pattern – the Y of XYn. Ignored if empty. [default: %default]"),
+              the pattern – the Y of XYn. [default: %default]"),
 #  make_option("--exclude-aa", default="",
 #              help="Use all amino acids BUT the ones supplied. If you are, for example, not interested
 #              in the role of Leucin, you can exclude it from the patterns: %prog --exclude-aa=\"L\".
