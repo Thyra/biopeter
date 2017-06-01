@@ -60,7 +60,10 @@ option_list <- list(
   make_option("--outfile", type="character",
               help="Save the generated rules in CSV format to this file instead of printing them to the screen."),
   make_option("--separator", type="character",
-              help="Which character or string should be used to delimit the columns of your outfile?", default=",")
+              help="Which character or string should be used to delimit the columns of your outfile?", default=","),
+
+  make_option("--explore", action="store_true", default=F,
+              help="Launch an interactive GUI to explore the rules (Inspired by Andrew Brooks' app that can be found at http://brooksandrew.github.io/simpleblog/articles/association-rules-explore-app/ ).")
 )
 
 arguments <- parse_args(OptionParser(option_list=option_list), positional_arguments = 1)
