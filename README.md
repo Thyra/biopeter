@@ -34,6 +34,11 @@ Then you need to download biopeter itself. Probably the easiest way is to clone 
 git clone -b distribution --single-branch https://github.com/Thyra/biopeter.git biopeter
 ```
 
+If you want to use the [exploration feature](https://github.com/Thyra/biopeter#specifying-patterns) you also have to install the shiny and arulesViz package:
+```
+install.packages(c("shiny", "arulesViz"))
+```
+
 ## Usage
 ```
 Rscript biopeter.R <file>
@@ -187,3 +192,6 @@ Be careful, though, the resulting file has numbers as its first column and no he
 If you're on Linux you can easily fix this with the following bash command `echo -e "$(head -1 outfile.csv)\n$(tail -n +2 outfile.csv | cut -d"," -f 2-)" > new_outfile.csv` where outfile.csv is the name of your CSV file.
 
 If you don't like commas as separators, you can also provide a different `--separator` character.
+
+## Exploring Rules
+This is probably the coolest feature biopeter has to offer: You can interactively explore the rules visually in an application that is based on Andrew Brooks' [Interactive association rules exploration app](http://brooksandrew.github.io/simpleblog/articles/association-rules-explore-app/). Simply launch biopeter with the `--explore` flag and enjoy!
