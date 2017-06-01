@@ -5,14 +5,14 @@
 
 ## Purpose
 Biopeter is a utility intended to find [association rules](https://en.wikipedia.org/wiki/Association_rule_learning) for patterns in amino acid sequences.
-It takes a collection of amino acid sequences in [fasta format](https://en.wikipedia.org/wiki/FASTA_format)\* and deduces rules like *if the pattern X is present in the sequence, the pattern Y is also contained with a probability of p percent*.
+It takes a collection of amino acid sequences in [fasta format](https://en.wikipedia.org/wiki/FASTA_format)\* and deduces rules like *if the patterns A and B are present in the sequence, the pattern C is also contained with a probability of p percent*.
 This can help biologists and bioinformaticians to discover functional relationships between different amino acid patterns in a set of related sequences.
 
-By default, biopeter works with patterns in the *XYn* form. *X* and *Y* are two amino acids and *n* denotes a distance between them. For example, *MK2* would mean a pattern where the amino acid Methionine (M) appears in the sequence, then there are 2 arbitrary amino acids, and then Lysine (K) follows. *LE1* means Leucin (L), one arbitrary amino acid, and then Glutamic acid. The following examplary sequence contains both these patterns: `MIPKLIEGKWPHGYNHECDE`
+By default, biopeter works with patterns in the *XYn* form. *X* and *Y* are two amino acids and *n* denotes a distance between them. For example, *MK2* would mean a pattern where the amino acid Methionine (M) appears in the sequence, then there are 2 arbitrary amino acids, and then Lysine (K) follows. *LE1* means Leucin (L), one arbitrary amino acid, and then Glutamic acid. The following examplary sequence contains both these patterns: `MPLKE`
 
 If the *XYn* form does not fulfill your needs, it is also possible to work with custom regular expressions for patterns. This way you can create more complex patterns like `[MK][CTP]{2,5}[DL]`.
 
-\* In contrast to the standard format, biopeter will treat empty lines as the beginning of a new sequence. So the following file would contain three, not two sequences:
+\* In contrast to the standard fasta format, biopeter will treat empty lines as the beginning of a new sequence. So the following file would contain three, not two sequences:
 
 ```
 >random sequence 1 consisting of 20 residues.
@@ -45,7 +45,7 @@ DNPLSPDEMSHEGIHPWFSK
 >random sequence 5 consisting of 20 residues.
 YIDDTKRNRSDMLGEDVHTQ
 ```
-Biopeter will then print out the association rules it has found between combinations of two amino acids each and a distance between them (obviously that makes more sense when the sequences are not random ;-)).
+Biopeter will then print out the association rules it has found between the XYn patterns (obviously that makes more sense when the sequences are not random ;-)).
 
 ## Specifying Patterns
 ### Generate Patterns
@@ -105,7 +105,7 @@ If you have more complicated patterns you want to examine or the XYn scheme simp
 D{2,4}A
 ^KLE+
 ``` 
-Additionally to the `patterns-file` option you then have to pass the `--regex-patterns` flag: `Rscript biopeter.R --patterns-file="mypatterns.txt" --regex-patterns <sequenceFile>`
+Additionally to the `patterns-file` option you then have to pass the `--regex-patterns` flag: `Rscript biopeter.R --regex-patterns --patterns-file="mypatterns.txt" <sequenceFile>`
 
 #### Abusing biopeter
 Even though biopeter is intended to be used on protein sequences, you can create association rules on all kinds of text patterns.
@@ -148,3 +148,32 @@ A very important part in mining association rules is to select only those that f
 		Maximal number of items to be considered in one rule. [default: 10]
 ```
 As you can see the default values are very restrictive. The reason is the sheer amount of generated patterns and possible combinations thereof (2800 patterns -> 2^2800 combinations with default settings). So be careful when loosening the restrictions or your machine might run out of memory and freeze (happened to me many times while testing…)
+
+## Saving the results
+By default, biopeter prints the rules he found on screen. In many cases you might want to process them further, though.
+It is therefore possible to save the rules in a CSV-like file via the `--outfile` option.
+Be careful, though, the resulting file has numbers as its first column and no header for it:
+```
+"rules","support","confidence","lift"
+"1","{} => {F.{4}L}",0.900770712909441,0.900770712909441,1
+"2","{} => {F.{3}L}",0.92485549132948,0.92485549132948,1
+"3","{} => {L.{3}A}",0.968208092485549,0.968208092485549,1
+"4","{} => {L.{3}L}",0.975915221579961,0.975915221579961,1
+"5","{} => {L.{4}L}",0.980732177263969,0.980732177263969,1
+"6","{F.{3}L} => {L.{3}L}",0.903660886319846,0.977083333333333,1.00119693978282
+"7","{L.{3}L} => {F.{3}L}",0.903660886319846,0.925962487660415,1.00119693978282
+"8","{F.{3}L} => {L.{4}L}",0.907514450867052,0.98125,1.00052799607073
+"9","{L.{4}L} => {F.{3}L}",0.907514450867052,0.925343811394892,1.00052799607073
+"10","{L.{3}A} => {L.{3}L}",0.946050096339114,0.977114427860696,1.00122880169734
+"11","{L.{3}L} => {L.{3}A}",0.946050096339114,0.969397828232971,1.00122880169734
+"12","{L.{3}A} => {L.{4}L}",0.951830443159923,0.983084577114428,1.00239861595754
+"13","{L.{4}L} => {L.{3}A}",0.951830443159923,0.970530451866405,1.00239861595754
+"14","{L.{3}L} => {L.{4}L}",0.961464354527938,0.985192497532083,1.00454794935
+"15","{L.{4}L} => {L.{3}L}",0.961464354527938,0.980353634577603,1.00454794935
+"16","{L.{3}L,L.{3}A} => {L.{4}L}",0.934489402697495,0.987780040733198,1.00718632837039
+"17","{L.{4}L,L.{3}A} => {L.{3}L}",0.934489402697495,0.981781376518219,1.0060109267778
+"18","{L.{3}L,L.{4}L} => {L.{3}A}",0.934489402697495,0.971943887775551,1.00385846319505
+```
+If you're on Linux you can easily fix this with the following bash command `echo -e "$(head -1 outfile.csv)\n$(tail -n +2 outfile.csv | cut -d"," -f 2-)" > new_outfile.csv` where outfile.csv is the name of your CSV file.
+
+If you don't like commas as separators, you can also provide a different `--separator` character.

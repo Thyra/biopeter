@@ -55,7 +55,12 @@ option_list <- list(
   make_option("--confidence", type="double",
               help="Minimal confidence for the mined rules. [default: %default]", default=0.9),
   make_option("--maxlen", type="integer",
-              help="Maximal number of items to be considered in one rule. [default: %default]", default=10)
+              help="Maximal number of items to be considered in one rule. [default: %default]", default=10),
+
+  make_option("--outfile", type="character",
+              help="Save the generated rules in CSV format to this file instead of printing them to the screen."),
+  make_option("--separator", type="character",
+              help="Which character or string should be used to delimit the columns of your outfile?", default=",")
 )
 
 arguments <- parse_args(OptionParser(option_list=option_list), positional_arguments = 1)
