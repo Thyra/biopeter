@@ -40,16 +40,21 @@ if(!is.null(options$`patterns-file`)) {
 transactions <- create_transactions(parse_multifasta_file(file), patterns)
 rm(patterns)
 
-# Apply apriori algorithm and output results
-rules <- apriori(transactions,
-                 parameter = list(supp = options$support,
-                                  conf = options$confidence,
-                                  maxlen = options$maxlen))
-rm(transactions)
-if(!is.null(options$`outfile`)) {
-  write(rules, file=options$`outfile`, sep=options$`separator`, quote=T)
+if(options$`explore`) {
+  source("R/explorer.R")
+  launchExplorer(transactions, supp=options$support, conf=options$confidence)
 } else {
-  print(inspect(rules))
+  # Apply apriori algorithm and output results
+  rules <- apriori(transactions,
+                   parameter = list(supp = options$support,
+                                    conf = options$confidence,
+                                    maxlen = options$maxlen))
+  rm(transactions)
+  if(!is.null(options$`outfile`)) {
+    write(rules, file=options$`outfile`, sep=options$`separator`, quote=T)
+  } else {
+    print(inspect(rules))
+  }
 }
 
 ### NOTES/UNFINISHED/BLABLABLA ###
