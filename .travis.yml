@@ -1,4 +1,0 @@
-language: r
-cache: packages
-script: Rscript tests/testthat.R
-notifications: off
