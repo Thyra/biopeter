@@ -53,8 +53,9 @@ parse_multifasta_file <- function(filepath) {
 # Expects a character vector of sequences and one character vector of regex patterns
 # Returns transactions: sequences are datasets, patterns are items
 create_transactions <- function(sequences, patterns) {
+  # @TODO parallelize
   return(
-    as(sapply(patterns, grepl, sequences, ignore.case=T),
+    as(vapply(patterns, grepl, sequences, ignore.case=T, FUN.VALUE=vector("logical", length(sequences))),
       "transactions")
   )
 }

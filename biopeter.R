@@ -32,14 +32,13 @@ if(!is.null(options$`patterns-file`)) {
     aa_right  <- strsplit(options$`aa-right`, "")[[1]]
   }
 
-  # Generate patterns and read sequences
+  # Generate patterns
   patterns <- xyn_patterns_to_regex(generate_xyn_patterns(aa_left, aa_right, options$`n-min`:options$`n-max`))
 }
-sequences <- parse_multifasta_file(file)
 
-# Generate transactions from them
-transactions <- create_transactions(sequences, patterns)
-rm(patterns, sequences)
+# Generate transactions
+transactions <- create_transactions(parse_multifasta_file(file), patterns)
+rm(patterns)
 
 # Apply apriori algorithm and output results
 rules <- apriori(transactions,
