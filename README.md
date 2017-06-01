@@ -24,6 +24,16 @@ GKRQEYVCEEEMFVAPCTPS
 QKNKLEWRRAKMTTIFVSDL
 ```
 
+## Installation
+biopeter depends on the R packages arules and optparse so install these first:
+```
+install.packages(c("arules", "optparse"))
+```
+Then you need to download biopeter itself. Probably the easiest way is to clone the distribution branch of this repository:
+```
+git clone -b distribution --single-branch https://github.com/Thyra/biopeter.git biopeter
+```
+
 ## Usage
 ```
 Rscript biopeter.R <file>
