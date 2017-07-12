@@ -5,6 +5,7 @@ source("R/cli_options.R")
 
 # Load lib
 source("R/lib.R")
+source("R/rules2df.R")
 
 # Load libraries
 library("arules")
@@ -49,11 +50,20 @@ if(options$`explore`) {
                    parameter = list(supp = options$support,
                                     conf = options$confidence,
                                     maxlen = options$maxlen))
-  rm(transactions)
+   quality(rules)$conviction <- interestMeasure(rules, measure='conviction', transactions=transactions)
+   quality(rules)$hyperConfidence <- interestMeasure(rules, measure='hyperConfidence', transactions=transactions)
+   quality(rules)$cosine <- interestMeasure(rules, measure='cosine', transactions=transactions)
+   quality(rules)$chiSqurulese <- interestMeasure(rules, measure='chiSquare', transactions=transactions)
+   quality(rules)$coverage <- interestMeasure(rules, measure='coverage', transactions=transactions)
+   quality(rules)$doc <- interestMeasure(rules, measure='doc', transactions=transactions)
+   quality(rules)$gini <- interestMeasure(rules, measure='gini', transactions=transactions)
+   quality(rules)$hyperLift <- interestMeasure(rules, measure='hyperLift', transactions=transactions)
+  rulesdf <- rules2df(rules)
+  rm(transactions, rules)
   if(!is.null(options$`outfile`)) {
-    write(rules, file=options$`outfile`, sep=options$`separator`, quote=T)
+    write.csv(rulesdf, file=options$`outfile`, quote=T)
   } else {
-    print(inspect(rules))
+    print(rulesdf)
   }
 }
 

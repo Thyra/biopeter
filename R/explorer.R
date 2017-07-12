@@ -4,7 +4,6 @@
 
 library("shiny")
 library("arulesViz")
-source("R/rules2df.R")
 
 launchExplorer <- function(transactions, supp = 0.9, conf = 0.9) {
 
