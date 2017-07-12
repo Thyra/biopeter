@@ -36,6 +36,9 @@ launchExplorer <- function(transactions, supp = 0.9, conf = 0.9) {
           tabPanel('Grouped', value='grouped', plotOutput("groupedPlot", width='100%', height='100%')),
           tabPanel('Graph', value='graph', plotOutput("graphPlot", width='100%', height='100%')),
           tabPanel('Parallel Coordinates', value='paracoord', plotOutput("paracoordPlot", width='100%', height='100%')),
+          tabPanel('Matrix', value='matrix', plotOutput("matrixPlot", width='100%', height='100%')),
+          tabPanel('Pattern Frequency', value='itemFreq', plotOutput("itemFreqPlot", width='100%', height='100%')),
+          tabPanel('Data Table', value='datatable', dataTableOutput("rulesDataTable")),
           tabPanel('Raw', value='Table', verbatimTextOutput("rulesTable"))
           )
       )
@@ -44,7 +47,16 @@ launchExplorer <- function(transactions, supp = 0.9, conf = 0.9) {
     server = function(input, output) {
 
       rules <- reactive({
-        return(apriori(transactions, parameter=list(supp = input$supp, conf = input$conf, maxlen=10)))
+       ar <- apriori(transactions, parameter=list(supp = input$supp, conf = input$conf, maxlen=10))
+       quality(ar)$conviction <- interestMeasure(ar, method='conviction', transactions=transactions)
+       quality(ar)$hyperConfidence <- interestMeasure(ar, method='hyperConfidence', transactions=transactions)
+       quality(ar)$cosine <- interestMeasure(ar, method='cosine', transactions=transactions)
+       quality(ar)$chiSquare <- interestMeasure(ar, method='chiSquare', transactions=transactions)
+       quality(ar)$coverage <- interestMeasure(ar, method='coverage', transactions=transactions)
+       quality(ar)$doc <- interestMeasure(ar, method='doc', transactions=transactions)
+       quality(ar)$gini <- interestMeasure(ar, method='gini', transactions=transactions)
+       quality(ar)$hyperLift <- interestMeasure(ar, method='hyperLift', transactions=transactions)
+       return(ar)
       })
 
       nR <- reactive({
@@ -67,10 +79,25 @@ launchExplorer <- function(transactions, supp = 0.9, conf = 0.9) {
         plot(sort(rules(), by=input$sort)[1:nR()], method='paracoord')
       }, height=800, width=800)
 
+      output$matrixPlot <- renderPlot({
+        plot(sort(rules(), by=input$sort)[1:nR()], method='matrix', control=list(reorder=T))
+      }, height=800, width=800)
+
+      output$itemFreqPlot <- renderPlot({
+        itemFrequencyPlot(transactions)
+      }, height=800, width=800)
+
+      output$rulesDataTable <- renderDataTable({
+        ar <- rules()
+        rulesdt <- rules2df(ar)
+        rulesdt
+      })
+
       output$rulesTable <- renderPrint({
         inspect(sort(rules(), by=input$sort))
       })
 
-    }
+    },
+    options = list(port = 8080, launch.browser = T)
   )
 }

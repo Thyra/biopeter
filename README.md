@@ -34,7 +34,7 @@ Then you need to download biopeter itself. Probably the easiest way is to clone 
 git clone -b distribution --single-branch https://github.com/Thyra/biopeter.git biopeter
 ```
 
-If you want to use the [exploration feature](https://github.com/Thyra/biopeter#specifying-patterns) you also have to install the shiny and arulesViz package:
+If you want to use the [exploration feature](https://github.com/Thyra/biopeter#exploring-rules) you also have to install the shiny and arulesViz package:
 ```
 install.packages(c("shiny", "arulesViz"))
 ```
@@ -166,32 +166,7 @@ As you can see the default values are very restrictive. The reason is the sheer 
 
 ## Saving the results
 By default, biopeter prints the rules he found on screen. In many cases you might want to process them further, though.
-It is therefore possible to save the rules in a CSV-like file via the `--outfile` option.
-Be careful, though, the resulting file has numbers as its first column and no header for it:
-```
-"rules","support","confidence","lift"
-"1","{} => {F.{4}L}",0.900770712909441,0.900770712909441,1
-"2","{} => {F.{3}L}",0.92485549132948,0.92485549132948,1
-"3","{} => {L.{3}A}",0.968208092485549,0.968208092485549,1
-"4","{} => {L.{3}L}",0.975915221579961,0.975915221579961,1
-"5","{} => {L.{4}L}",0.980732177263969,0.980732177263969,1
-"6","{F.{3}L} => {L.{3}L}",0.903660886319846,0.977083333333333,1.00119693978282
-"7","{L.{3}L} => {F.{3}L}",0.903660886319846,0.925962487660415,1.00119693978282
-"8","{F.{3}L} => {L.{4}L}",0.907514450867052,0.98125,1.00052799607073
-"9","{L.{4}L} => {F.{3}L}",0.907514450867052,0.925343811394892,1.00052799607073
-"10","{L.{3}A} => {L.{3}L}",0.946050096339114,0.977114427860696,1.00122880169734
-"11","{L.{3}L} => {L.{3}A}",0.946050096339114,0.969397828232971,1.00122880169734
-"12","{L.{3}A} => {L.{4}L}",0.951830443159923,0.983084577114428,1.00239861595754
-"13","{L.{4}L} => {L.{3}A}",0.951830443159923,0.970530451866405,1.00239861595754
-"14","{L.{3}L} => {L.{4}L}",0.961464354527938,0.985192497532083,1.00454794935
-"15","{L.{4}L} => {L.{3}L}",0.961464354527938,0.980353634577603,1.00454794935
-"16","{L.{3}L,L.{3}A} => {L.{4}L}",0.934489402697495,0.987780040733198,1.00718632837039
-"17","{L.{4}L,L.{3}A} => {L.{3}L}",0.934489402697495,0.981781376518219,1.0060109267778
-"18","{L.{3}L,L.{4}L} => {L.{3}A}",0.934489402697495,0.971943887775551,1.00385846319505
-```
-If you're on Linux you can easily fix this with the following bash command `echo -e "$(head -1 outfile.csv)\n$(tail -n +2 outfile.csv | cut -d"," -f 2-)" > new_outfile.csv` where outfile.csv is the name of your CSV file.
-
-If you don't like commas as separators, you can also provide a different `--separator` character.
+It is therefore possible to save the rules in a CSV file via the `--outfile` option.
 
 ## Exploring Rules
 This is probably the coolest feature biopeter has to offer: You can interactively explore the rules visually in an application that is based on Andrew Brooks' [Interactive association rules exploration app](http://brooksandrew.github.io/simpleblog/articles/association-rules-explore-app/). Simply launch biopeter with the `--explore` flag and enjoy!
