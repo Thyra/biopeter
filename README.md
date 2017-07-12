@@ -34,7 +34,7 @@ Then you need to download biopeter itself. Probably the easiest way is to clone 
 git clone -b distribution --single-branch https://github.com/Thyra/biopeter.git biopeter
 ```
 
-If you want to use the [exploration feature](https://github.com/Thyra/biopeter#specifying-patterns) you also have to install the shiny and arulesViz package:
+If you want to use the [exploration feature](https://github.com/Thyra/biopeter#exploring-rules) you also have to install the shiny and arulesViz package:
 ```
 install.packages(c("shiny", "arulesViz"))
 ```
